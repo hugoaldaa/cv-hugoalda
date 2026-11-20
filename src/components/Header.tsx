@@ -12,14 +12,14 @@ export function Header() {
         />
         
         <div className="flex-1 text-center md:text-left">
-          <h1 className="text-slate-900 mb-2">Hugo Alda</h1>
+          <h1 className="text-slate-900 mb-2">Hugo Alda Cárdenas</h1>
           <div className="flex items-center justify-center md:justify-start gap-2 text-slate-600 mb-3">
             <Briefcase className="w-5 h-5" />
-            <p>Desarrollador Full Stack</p>
+            <p>Desarrollador Web y Administrador de Sistemas</p>
           </div>
           <div className="flex items-center justify-center md:justify-start gap-2 text-slate-600">
             <MapPin className="w-4 h-4" />
-            <p>Ciudad, País</p>
+            <p>Hospitalet de Llobregat, Barcelona</p>
           </div>
         </div>
       </div>

@@ -1,44 +1,65 @@
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
-import { GraduationCap, Calendar } from "lucide-react";
-
-const education = [
-  {
-    degree: "CFGS - Administración de Servicios Informáticos y Redes",
-    institution: "Jesuïtas Bellvitge",
-    period: "2025 - Presente",
-    description: "Desarrollo de tareas de configuración, administración y mantenimiento de sistemas informáticos libres y propietarios, tanto cliente como en contexto servidor. Diseño e implementación de sistemas en red. Aplicar y configurar aspectos de seguridad informática y sistemas de alta disponibilidad de recursos en red. Instalación, administración y gestión de bases de datos libres y propietarias. Implantación de gestores de contenidos Web."
-  },
-  {
-    degree: "CFGS - Desarrollo de Aplicaciones Web",
-    institution: "Jesuïtas Bellvitge",
-    period: "2024 - 2025",
-    description: "Desarrollo de tareas de creación de aplicaciones Web utilizando diversos lenguajes de programación y plataformas de desarrollo. Diseño de contenidos gráficos y multimedia, aplicando criterios de usabilidad y accesibilidad. Creación de aplicaciones Web en entorno cliente y en entorno servidor. Desarrollo de aplicaciones interactivas y juegos Web con HTML5."
-  }
-];
+import { Card, CardContent } from "./ui/card";
+import { Calendar, GraduationCap } from "lucide-react";
+import { useLanguage } from "../context/LanguageContext";
 
 export function Education() {
+  const { t } = useLanguage();
+  const education = t.education.items;
+
   return (
-    <section id="educacion" className="py-20 px-4">
-      <div className="max-w-4xl mx-auto">
+    <section id="educacion" className="py-20 px-4 bg-slate-50">
+      <div className="max-w-[1600px] mx-auto">
         <div className="text-center mb-12">
-          <h2 className="text-slate-900 mb-4">Educación</h2>
+          <h2 className="text-slate-900 mb-4">{t.education.title}</h2>
           <div className="w-20 h-1 bg-blue-600 mx-auto"></div>
+          <p className="text-slate-600 mt-4">{t.education.subtitle}</p>
         </div>
-        <Card>
-          <CardContent className="space-y-6 pt-6">
-            {education.map((edu, index) => (
-              <div key={index} className="border-l-2 border-blue-600 pl-4 pb-4 last:pb-0">
-                <h3 className="text-slate-900 mb-1">{edu.degree}</h3>
-                <p className="text-slate-700 mb-2">{edu.institution}</p>
-                <div className="flex items-center gap-2 text-slate-500 mb-2">
-                  <Calendar className="w-4 h-4" />
-                  <span className="text-sm">{edu.period}</span>
+
+        {/* Timeline horizontal de izquierda a derecha */}
+        <div className="flex flex-col md:flex-row gap-3 items-stretch justify-center">
+          {education.map((edu, index) => (
+            <div key={index} className="flex flex-col w-full md:flex-1 md:min-w-0">
+              {/* Tarjeta */}
+              <Card className="flex-1 mb-8 flex flex-col hover:shadow-lg transition-shadow">
+                <CardContent className="p-6 flex-1 flex flex-col">
+                  {/* Período */}
+                  <div className="flex items-center gap-2 mb-4">
+                    <Calendar className="w-4 h-4 text-blue-600 flex-shrink-0" />
+                    <span className="text-sm font-semibold text-blue-600">{edu.period}</span>
+                  </div>
+
+                  {/* Título */}
+                  <h3 className="text-slate-900 mb-2 text-sm font-bold leading-snug min-h-[2.5rem]">
+                    {edu.degree}
+                  </h3>
+
+                  {/* Institución */}
+                  <div className="flex items-center gap-2 mb-4">
+                    <GraduationCap className="w-4 h-4 text-slate-400 flex-shrink-0" />
+                    <p className="text-slate-600 text-xs font-medium">{edu.institution}</p>
+                  </div>
+
+                  {/* Descripción */}
+                  <p className="text-slate-500 text-xs leading-relaxed flex-1">
+                    {edu.description}
+                  </p>
+                </CardContent>
+              </Card>
+
+              {/* Conector vertical + nodo (solo desktop) */}
+              <div className="hidden md:block">
+                <div className="w-px h-6 bg-blue-300 mx-auto"></div>
+                <div className="flex items-center w-[calc(100%+0.75rem)] mx-auto">
+                  <div className={`h-px flex-1 bg-blue-300 ${index === 0 ? "invisible" : ""}`}></div>
+                  <div className={`w-4 h-4 rounded-full border-4 border-white shadow flex-shrink-0 ${
+                    index === education.length - 1 ? "bg-blue-600" : "bg-blue-400"
+                  }`}></div>
+                  <div className={`h-px flex-1 bg-blue-300 ${index === education.length - 1 ? "invisible" : ""}`}></div>
                 </div>
-                <p className="text-slate-600">{edu.description}</p>
               </div>
-            ))}
-          </CardContent>
-        </Card>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );

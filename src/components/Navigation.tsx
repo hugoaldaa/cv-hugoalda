@@ -1,18 +1,51 @@
 import { useState, useEffect } from "react";
-import { Menu, X } from "lucide-react";
-import { Button } from "./ui/button";
+import { Menu, X, Globe } from "lucide-react";
+import { useLanguage } from "../context/LanguageContext";
+import type { Language } from "../i18n/translations";
 
-const navItems = [
-  { label: "Inicio", href: "#inicio" },
-  { label: "Sobre Mí", href: "#sobre-mi" },
-  { label: "Experiencia", href: "#experiencia" },
-  { label: "Educación", href: "#educacion" },
-  { label: "Habilidades", href: "#habilidades" },
-  { label: "Portfolio", href: "#portfolio" },
-  { label: "Contacto", href: "#contacto" }
-];
+const navKeys = [
+  { key: "inicio", href: "#inicio" },
+  { key: "educacion", href: "#educacion" },
+  { key: "experiencia", href: "#experiencia" },
+  { key: "habilidades", href: "#habilidades" },
+  { key: "portfolio", href: "#portfolio" },
+  { key: "contacto", href: "#contacto" },
+] as const;
+
+function LanguageSwitcher({
+  className = "",
+}: {
+  className?: string;
+}) {
+  const { language, setLanguage, t } = useLanguage();
+
+  return (
+    <div
+      role="group"
+      aria-label={t.common.language}
+      className={`inline-flex items-center rounded-full border border-slate-200 p-0.5 ${className}`}
+    >
+      {(["es", "en"] as Language[]).map((lang) => (
+        <button
+          key={lang}
+          type="button"
+          onClick={() => setLanguage(lang)}
+          aria-pressed={language === lang}
+          className={`rounded-full px-2.5 py-1 text-xs font-semibold transition-colors ${
+            language === lang
+              ? "bg-blue-600 text-white"
+              : "text-slate-500 hover:text-slate-900"
+          }`}
+        >
+          {lang.toUpperCase()}
+        </button>
+      ))}
+    </div>
+  );
+}
 
 export function Navigation() {
+  const { t } = useLanguage();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -54,7 +87,7 @@ export function Navigation() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-6">
-            {navItems.map((item) => (
+            {navKeys.map((item) => (
               <a
                 key={item.href}
                 href={item.href}
@@ -64,9 +97,13 @@ export function Navigation() {
                 }}
                 className="text-slate-700 hover:text-slate-900 transition-colors cursor-pointer"
               >
-                {item.label}
+                {t.nav[item.key]}
               </a>
             ))}
+            <div className="flex items-center gap-2 pl-2 border-l border-slate-200">
+              <Globe className="w-4 h-4 text-slate-400" aria-hidden="true" />
+              <LanguageSwitcher />
+            </div>
           </div>
 
           {/* Mobile Menu Button */}
@@ -84,8 +121,8 @@ export function Navigation() {
 
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
-          <div className="md:hidden py-4 border-t border-slate-200">
-            {navItems.map((item) => (
+          <div className="md:hidden py-4 border-t border-slate-200 bg-white">
+            {navKeys.map((item) => (
               <a
                 key={item.href}
                 href={item.href}
@@ -95,9 +132,13 @@ export function Navigation() {
                 }}
                 className="block py-2 text-slate-700 hover:text-slate-900 transition-colors cursor-pointer"
               >
-                {item.label}
+                {t.nav[item.key]}
               </a>
             ))}
+            <div className="flex items-center gap-2 pt-4 mt-2 border-t border-slate-200">
+              <Globe className="w-4 h-4 text-slate-400" aria-hidden="true" />
+              <LanguageSwitcher />
+            </div>
           </div>
         )}
       </div>
